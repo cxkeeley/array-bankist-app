@@ -61,24 +61,25 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = (movements) => {
-    containerMovements.innerHTML = '';
+const displayMovements = movements => {
+  containerMovements.innerHTML = '';
 
-    movements.forEach ( (mov, i) => {
-        const type = (mov > 0) ? 'deposit' : 'withdrawal';
+  movements.forEach((mov, i) => {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
 
-        const html = `
-            <div class="movements__row">
-                <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-                <div class="movements__value">${mov}</div>
-            </div>
-        `;
+    const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+        <div class="movements__value">${mov}</div>
+      </div>
+    `;
 
-        containerMovements.insertAdjacentHTML('afterbegin', html);
-    });
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
 };
 displayMovements(account1.movements);
-
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -94,3 +95,10 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
+// PIPELINE
+const eurToUsd = 1.1;
+const totalDepositsUSD = movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * eurToUsd)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(totalDepositsUSD);
